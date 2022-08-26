@@ -21,7 +21,7 @@ _Appium is a tool for automating native, mobile web, and hybrid applications on 
 
 *Learn the basics of [Appium testing on the LambdaTest platform](https://www.lambdatest.com/support/docs/getting-started-with-appium-testing/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java).*
 
-[<img height="53" width="200" src="https://user-images.githubusercontent.com/70570645/171866795-52c11b49-0728-4229-b073-4b704209ddde.png">](https://accounts.lambdatest.com/register?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java)
+[<img height="53" width="200" src="https://user-images.githubusercontent.com/70570645/171866795-52c11b49-0728-4229-b073-4b704209ddde.png">](https://appautomation.lambdatest.com/build)
 
 ## Table of Contents
 
@@ -40,7 +40,7 @@ Before you can start performing App automation testing with Appium, you would ne
 
 Clone the LambdaTest’s :link: [LT-appium-kotlin](https://github.com/LambdaTest/LT-appium-kotlin) repository and navigate to the code directory as shown below:
 
-```js
+```bash
 git clone https://github.com/LambdaTest/LT-appium-kotlin
 cd LT-appium-kotlin
 ```
@@ -53,14 +53,14 @@ Set LambdaTest `Username` and `Access Key` in environment variables.
 
 **For Linux/macOS:**
 
-```js
+```bash
 export LT_USERNAME="YOUR_LAMBDATEST_USERNAME" \
 export LT_ACCESS_KEY="YOUR_LAMBDATEST_ACCESS_KEY"
 ```
 
 **For Windows:**
 
-```js
+```powershell
 set LT_USERNAME="YOUR_LAMBDATEST_USERNAME" `
 set LT_ACCESS_KEY="YOUR_LAMBDATEST_ACCESS_KEY"
 ```
@@ -73,7 +73,7 @@ Upload your **_iOS_** application (.ipa file) or **_android_** application (.apk
 
 **Linux/macOS:**
 
-```js
+```bash
 curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" \
 --location --request POST 'https://manual-api.lambdatest.com/app/upload/realDevice' \
 --form 'name="Android_App"' \
@@ -82,7 +82,7 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" \
 
 **Windows:**
 
-```js
+```powershell
 curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://manual-api.lambdatest.com/app/upload/realDevice" -F "appFile=@"/Users/macuser/Downloads/proverbial_android.apk""
 ```
 
@@ -90,7 +90,7 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://m
 
 **Linux/macOS:**
 
-```js
+```bash
 curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" \
 --location --request POST 'https://manual-api.lambdatest.com/app/upload/realDevice' \
 --form 'name="Android_App"' \
@@ -99,7 +99,7 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" \
 
 **Windows:**
 
-```js
+```powershell
 curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://manual-api.lambdatest.com/app/upload/realDevice" -d "{"url":"https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_android.apk","name":"sample.apk"}"
 ```
 
@@ -173,7 +173,6 @@ You can update your custom capabilities in test scripts. In this sample project,
 
 ## Additional Links
 
-- [Advanced Configuration for Capabilities](https://www.lambdatest.com/support/docs/desired-capabilities-in-appium/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java)
 - [How to test locally hosted apps](https://www.lambdatest.com/support/docs/testing-locally-hosted-pages/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java)
 - [How to integrate LambdaTest with CI/CD](https://www.lambdatest.com/support/docs/integrations-with-ci-cd-tools/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java)
 
@@ -212,7 +211,7 @@ To stay updated with the latest features and product add-ons, visit [Changelog](
 - Geolocation testing of web and mobile apps across 53+ countries.
 - LT Browser - for responsive testing across 50+ pre-installed mobile, tablets, desktop, and laptop viewports
 
-[<img height="53" width="200" src="https://user-images.githubusercontent.com/70570645/171866795-52c11b49-0728-4229-b073-4b704209ddde.png">](https://accounts.lambdatest.com/register?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java)
+[<img height="53" width="200" src="https://user-images.githubusercontent.com/70570645/171866795-52c11b49-0728-4229-b073-4b704209ddde.png">](https://www.lambdatest.com/)
 
 ## We are here to help you :headphones:
 

@@ -29,6 +29,9 @@ class iOS {
         caps.setCapability("deviceOrientation", "PORTRAIT")
         caps.setCapability("build", "Kotlin Vanilla - iOS")
         caps.setCapability("name", "Sample Test Kotlin")
+        caps.setCapability("console", true)
+        caps.setCapability("network", false)
+        caps.setCapability("visual", true)
         caps.setCapability("device log", true)
 
 

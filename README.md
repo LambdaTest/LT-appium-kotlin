@@ -35,15 +35,16 @@ Before you can start performing App automation testing with Appium, you would ne
 
 - You need to install the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) because it provides Kotlin support. It is recommended by us but you can use any other IDE also.
 - Make sure that Kotlin plugins are enabled/installed in the IntelliJ IDEA if you are using a previous version.
+- Download and install **Maven** following the steps from [the official website](https://maven.apache.org/). Maven can also be installed easily on **Linux/MacOS** using [Homebrew](https://brew.sh/) package manager.
 
 ### Clone The Sample Project
 
-Clone the LambdaTest’s :link: [LT-appium-kotlin](https://github.com/LambdaTest/LT-appium-kotlin) repository and navigate to the code directory as shown below:
+Clone the LambdaTest’s :link: [LT-appium-kotlin](https://github.com/LambdaTest/LT-appium-kotlin) repository as shown below:
 
 ```bash
 git clone https://github.com/LambdaTest/LT-appium-kotlin
-cd LT-appium-kotlin
 ```
+>After you have cloned the project file open it in **InjelliJ IDEA** as a Maven project. Now right click on the LT-appium-kolin in the side bar under **Projects**, go to **Mark directory as** and choose it as **Source root**.
 
 ### Setting Up Your Authentication
 
@@ -165,9 +166,15 @@ You can update your custom capabilities in test scripts. In this sample project,
 
 ## Executing The Test
 
-1. Firstly **build** the test in IntelliJ IDEA and make sure that it is build successfully.
+1. Run the following command to install all the dependencies.
 
-2. Then, try running the current file by using **Run** button in the IDE.  
+```bash
+mvn clean install
+```
+
+2. Firstly **build** the test in IntelliJ IDEA and make sure that it is build successfully.
+
+3. Then, try running the current file by using **Run** button in the IDE.  
 
 **Info:** Your test results would be displayed on the test console (or command-line interface if you are using terminal/cmd) and on the :link: [LambdaTest App Automation Dashboard](https://appautomation.lambdatest.com/build?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-java).
 

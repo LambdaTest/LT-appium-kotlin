@@ -111,7 +111,7 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://m
 
 ## Run Your First Test
 
-**Test Scenario:** Check out [andorid.kt](https://github.com/LambdaTest/LT-appium-kotlin/blob/master/src/test/kotlin/andorid.kt) file to view the sample test script for android and [iOS.kt](https://github.com/LambdaTest/LT-appium-java/blob/master/src/test/kotlin/iOS.kt) for iOS.
+**Test Scenario:** Check out [andorid.kt](https://github.com/LambdaTest/LT-appium-kotlin/blob/main/src/test/kotlin/android.kt) file to view the sample test script for android and [iOS.kt](https://github.com/LambdaTest/LT-appium-java/blob/main/src/test/kotlin/iOS.kt) for iOS.
 
 ### Configuring Your Test Capabilities
 

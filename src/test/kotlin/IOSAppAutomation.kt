@@ -40,23 +40,23 @@ class IOSAppAutomation {
         Thread.sleep(4000)
 
         val color: MobileElement =
-            app.findElementById("color")
+            app.findElementByName("color")
         color.click()
 
         val text: MobileElement =
-            app.findElementById("Text")
+            app.findElementByName("Text")
         text.click()
 
         val toast: MobileElement =
-            app.findElementById("toast")
+            app.findElementByName("toast")
         toast.click()
 
         val notification: MobileElement =
-            app.findElementById("notification")
+            app.findElementByName("notification")
         notification.click()
 
         val geo: MobileElement =
-            app.findElementById("geoLocation")
+            app.findElementByName("geoLocation")
         geo.click()
 
         Thread.sleep(5000)

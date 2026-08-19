@@ -51,14 +51,14 @@ To run tests on **TestMu AI (Formerly LambdaTest)** cloud, set your credentials.
 
 You can get credentials from the **Automation Dashboard**.
 
-### Linux / macOS
+**Linux/macOS:**
 
 ```bash
 export LT_USERNAME="YOUR_USERNAME"
 export LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 ```
 
-### Windows
+**Windows:**
 
 ```powershell
 set LT_USERNAME="YOUR_USERNAME"
@@ -148,6 +148,13 @@ ltOptions["name"] = "iOS App Test"
 
 capabilities["LT:Options"] = ltOptions
 ```
+
+---
+
+**Note:**
+
+* You must add the generated **APP_URL** (returned when you [upload your application](#upload-your-application)) to the `"app"` capability in the config file.
+* You can generate capabilities for your test requirements with the help of our inbuilt **[Capabilities Generator tool](https://www.lambdatest.com/capabilities-generator/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-kotlin)**.
 
 ---
 

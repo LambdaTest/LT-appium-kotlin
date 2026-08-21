@@ -1,57 +1,41 @@
-# Kotlin with Appium
+# Run Appium Tests with Kotlin on TestMu AI (Formerly LambdaTest)
 
-*Appium is a tool for automating native, mobile web, and hybrid applications on iOS and Android platforms. It supports iOS native apps written in Objective-C or Swift and Android native apps written in Java or Kotlin. It also supports mobile web apps accessed using a mobile browser.*
+<p align="center">
+  <a href="https://www.testmuai.com/"><img src="https://img.shields.io/badge/MADE%20BY%20TestMu%20AI-000000.svg?style=for-the-badge&labelColor=000" alt="Made by TestMu AI"></a>
+  <a href="https://mvnrepository.com/artifact/io.appium/java-client"><img src="https://img.shields.io/maven-central/v/io.appium/java-client.svg?style=for-the-badge&labelColor=000000" alt="Appium Java Client version"></a>
+  <a href="https://community.testmuai.com/"><img src="https://img.shields.io/badge/Join%20the%20community-blueviolet.svg?style=for-the-badge&labelColor=000000" alt="Community"></a>
+</p>
 
-This project demonstrates how to perform **Appium automation testing on TestMu AI (Formerly LambdaTest) real device cloud**.
+## Getting Started
 
----
+[TestMu AI](https://www.testmuai.com/) (Formerly LambdaTest) is the world's first full-stack AI Agentic Quality Engineering platform that empowers teams to test intelligently, smarter, and ship faster. Built for scale, it offers a full-stack testing cloud with 10K+ real devices and 3,000+ browsers. With AI-native test management, MCP servers, and agent-based automation, TestMu AI supports Selenium, Appium, Playwright, and all major frameworks. 
 
-# Table of Contents
+With TestMu AI (Formerly LambdaTest), you can run Appium tests in Kotlin across real Android and iOS devices. This sample shows how to configure Kotlin Appium tests with Maven and IntelliJ to run on the TestMu AI Real Device Cloud.
 
-* Pre-requisites
-* Clone The Sample Project
-* Setting Up Authentication
-* Upload Your Application
-* Run Your First Test
-* Executing The Tests
+- [Sign up on TestMu AI](https://www.testmuai.com/register/) (Formerly LambdaTest).
+- Follow the [TestMu AI Documentation](https://www.testmuai.com/support/docs/) for the full setup walkthrough.
 
----
+### Prerequisites
 
-# Pre-requisites
+- JDK 8 or higher
+- Maven
+- IntelliJ IDEA (with the Kotlin plugin enabled)
+- A TestMu AI (Formerly LambdaTest) account with your username and access key
 
-Before starting Appium automation with Kotlin, ensure the following tools are installed:
+### Setup
 
-* Install **IntelliJ IDEA** (recommended for Kotlin development)
-* Make sure **Kotlin plugin** is enabled in IntelliJ
-* Install **Java 11+**
-* Install **Maven**
-
-Check Maven installation:
+Clone and install dependencies:
 
 ```bash
-mvn -version
-```
-
----
-
-# Clone The Sample Project
-
-```bash
-git clone https://github.com/LambdaTest/LT-appium-kotlin
-cd LT-appium-kotlin
+git clone https://github.com/LambdaTest/LT-appium-kotlin && cd LT-appium-kotlin
+mvn clean install
 ```
 
 Open the project in **IntelliJ IDEA** as a **Maven project**.
 
----
+Set your credentials as environment variables.
 
-# Setting Up Authentication
-
-To run tests on **TestMu AI (Formerly LambdaTest)** cloud, set your credentials.
-
-You can get credentials from the **Automation Dashboard**.
-
-**Linux/macOS:**
+**macOS / Linux:**
 
 ```bash
 export LT_USERNAME="YOUR_USERNAME"
@@ -60,18 +44,16 @@ export LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 
 **Windows:**
 
-```powershell
+```bash
 set LT_USERNAME="YOUR_USERNAME"
 set LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 ```
 
----
+### Upload Your Application
 
-# Upload Your Application
+Upload your **Android (.apk)** or **iOS (.ipa)** application using the REST API.
 
-Upload your **Android (.apk)** or **iOS (.ipa)** application using REST API.
-
-Example:
+**Using App File:**
 
 ```bash
 curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
@@ -80,182 +62,162 @@ curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
 --form 'appFile=@"/path/to/your/app.apk"'
 ```
 
-Response will return an **APP_URL** like:
+**Using App URL:**
+
+```bash
+curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
+--location --request POST 'https://manual-api.lambdatest.com/app/upload/realDevice' \
+--form 'name="Android_App"' \
+--form 'url="https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_android.apk"'
+```
+
+The response returns an **APP_URL** of the format:
 
 ```
 lt://APP123456789
 ```
 
-Use this **APP_URL** inside the test capability.
+Use this **APP_URL** in the `app` capability of your test.
 
----
+**Tip:** If you do not have an **.apk** or **.ipa** file, you can run the sample tests using our sample :link: [Android app](https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_android.apk) or sample :link: [iOS app](https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_ios.ipa).
 
-# Run Your First Test
+### Sample Tests
 
 This project contains the following sample test classes:
 
 ```
 src/test/kotlin/
-
-AndroidAppAutomation.kt
-AndroidWebAutomation.kt
-IOSAppAutomation.kt
-IOSWebAutomation.kt
+├── AndroidAppAutomation.kt
+├── AndroidWebAutomation.kt
+├── IOSAppAutomation.kt
+└── IOSWebAutomation.kt
 ```
 
----
+### Configuring Your Test Capabilities
 
-# W3C Capability Example
+The tests use the **W3C standard capability structure**, where all TestMu AI (Formerly LambdaTest) specific capabilities are nested under the `lt:options` key.
 
-The project uses **W3C standard capabilities**.
-
-### Android Example
+**Android:**
 
 ```kotlin
-val capabilities = HashMap<String, Any>()
-
-capabilities["platformName"] = "Android"
-
+val options = UiAutomator2Options()
 val ltOptions = HashMap<String, Any>()
 
-ltOptions["deviceName"] = "Galaxy S22"
-ltOptions["platformVersion"] = "12"
+ltOptions["user"] = System.getenv("LT_USERNAME")
+ltOptions["accessKey"] = System.getenv("LT_ACCESS_KEY")
+ltOptions["build"] = "Kotlin Vanilla - Android"
+ltOptions["name"] = "Sample Test Kotlin"
+ltOptions["platformName"] = "Android"
+ltOptions["deviceName"] = "Galaxy.*"
+ltOptions["platformVersion"] = "15"
 ltOptions["isRealMobile"] = true
-ltOptions["app"] = "APP_URL"
-ltOptions["build"] = "Kotlin Appium Sample"
-ltOptions["name"] = "Android App Test"
+ltOptions["deviceOrientation"] = "PORTRAIT"
+ltOptions["app"] = "APP_URL" // Add the app (.apk) url here
 
-capabilities["LT:Options"] = ltOptions
+options.setCapability("lt:options", ltOptions)
 ```
 
----
-
-### iOS Example
+**iOS:**
 
 ```kotlin
-val capabilities = HashMap<String, Any>()
-
-capabilities["platformName"] = "iOS"
-
+val options = XCUITestOptions()
 val ltOptions = HashMap<String, Any>()
 
-ltOptions["deviceName"] = "iPhone 14"
-ltOptions["platformVersion"] = "16"
+ltOptions["user"] = System.getenv("LT_USERNAME")
+ltOptions["accessKey"] = System.getenv("LT_ACCESS_KEY")
+ltOptions["build"] = "Kotlin Vanilla - iOS"
+ltOptions["name"] = "Sample Test Kotlin"
+ltOptions["platformName"] = "iOS"
+ltOptions["deviceName"] = "iPhone 13"
+ltOptions["platformVersion"] = "15"
 ltOptions["isRealMobile"] = true
-ltOptions["app"] = "APP_URL"
-ltOptions["build"] = "Kotlin Appium Sample"
-ltOptions["name"] = "iOS App Test"
 
-capabilities["LT:Options"] = ltOptions
+options.setCapability("lt:options", ltOptions)
+options.setCapability("app", "APP_URL") // Add the app (.ipa) url here
+options.setCapability("deviceOrientation", "PORTRAIT")
 ```
-
----
 
 **Note:**
 
-* You must add the generated **APP_URL** (returned when you [upload your application](#upload-your-application)) to the `"app"` capability in the config file.
-* You can generate capabilities for your test requirements with the help of our inbuilt **[Capabilities Generator tool](https://www.lambdatest.com/capabilities-generator/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-kotlin)**.
+* You must add the generated **APP_URL** (returned when you [upload your application](#upload-your-application)) to the `app` capability in the test file.
+* You can generate capabilities for your test requirements with the help of our inbuilt **[Capabilities Generator tool](https://www.lambdatest.com/capabilities-generator/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-kotlin)**. A more detailed capability guide is available [here](https://www.lambdatest.com/support/docs/desired-capabilities-in-appium/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-kotlin).
 
----
+### Run tests
 
-# Executing The Tests
-
-### Step 1 — Install dependencies
+Open the project in IntelliJ IDEA and run the test class, or run it from the command line:
 
 ```bash
-mvn clean install
-```
-
----
-
-### Step 2 — Run Android App Test
-
-```bash
+# Android app test
 mvn -Dtest=AndroidAppAutomation test
-```
 
----
-
-### Step 3 — Run Android Web Test
-
-```bash
+# Android web test
 mvn -Dtest=AndroidWebAutomation test
-```
 
----
-
-### Step 4 — Run iOS App Test
-
-```bash
+# iOS app test
 mvn -Dtest=IOSAppAutomation test
-```
 
----
-
-### Step 5 — Run iOS Web Test
-
-```bash
+# iOS web test
 mvn -Dtest=IOSWebAutomation test
-```
 
----
-
-### Run All Tests
-
-```bash
+# All tests
 mvn test
 ```
 
----
+View results on your TestMu AI dashboard, including live test execution, device logs, network logs, video recording, and screenshots.
 
-# View Test Results
+### Local testing with TestMu AI Tunnel
 
-Once execution starts, you can view test execution on:
+To test locally hosted apps, set up the TestMu AI tunnel. OS-specific guides:
 
-**TestMu AI (Formerly LambdaTest) App Automation Dashboard**
+- [Local Testing on Windows](https://www.testmuai.com/support/docs/local-testing-for-windows/)
+- [Local Testing on macOS](https://www.testmuai.com/support/docs/local-testing-for-macos/)
+- [Local Testing on Linux](https://www.testmuai.com/support/docs/local-testing-for-linux/)
 
-[https://appautomation.lambdatest.com/build](https://appautomation.lambdatest.com/build)
+Add the following to your capabilities:
 
-You will be able to see:
+```js
+tunnel: true,
+```
 
-* Live test execution
-* Device logs
-* Network logs
-* Video recording
-* Screenshots
+## Contributions
 
----
-# Additional Resources
+Contributions are welcome. Open an issue to discuss your idea before submitting a pull request. When reporting bugs, include your JDK version, OS, and IntelliJ IDEA version.
 
-To learn more about mobile automation and TestMu AI platform features, refer to the following documentation:
+## TestMu AI (Formerly LambdaTest) Community
 
-* **TestMu AI Documentation**
-  [https://www.testmuai.com/support/docs/](https://www.testmuai.com/support/docs/)
+Connect with testers and developers in the [TestMu AI Community](https://community.testmuai.com/). Ask questions, share what you are building, and discuss best practices in test automation and DevOps.
+  
+## TestMu AI (Formerly LambdaTest) Certifications
 
-* **Getting Started with Appium Testing**
-  [https://www.testmuai.com/support/docs/getting-started-with-appium-testing/](https://www.testmuai.com/support/docs/getting-started-with-appium-testing/)
+Earn free [TestMu AI Certifications](https://www.testmuai.com/certifications/) for testers, developers, and QA engineers. Validate your skills in Selenium, Cypress, Playwright, Appium, Espresso and more. Industry-recognized, shareable on LinkedIn, and built by practitioners, not marketers.
 
-* **CI/CD Integrations Guide**
-  [https://www.testmuai.com/support/docs/integrations-with-ci-cd-tools/](https://www.testmuai.com/support/docs/integrations-with-ci-cd-tools/)
+## Learning Resources by TestMu AI (Formerly LambdaTest)
 
-* **Real Device Cloud Testing**
-  [https://www.testmuai.com/support/docs/app-testing-on-real-devices/](https://www.testmuai.com/support/docs/app-testing-on-real-devices/)
+Learn modern testing through tutorials, guides, videos, and weekly updates:
 
----
+* [TestMu AI Blog](https://www.testmuai.com/blog/)
+* [TestMu AI Learning Hub](https://www.testmuai.com/learning-hub/)
+* [TestMu AI on YouTube](https://www.youtube.com/@TestMuAI)
+* [TestMu AI Newsletter](https://www.testmuai.com/newsletter/)
+  
+## LambdaTest is Now TestMu AI
 
+On **January 12, 2026**, [LambdaTest evolved to TestMu AI](https://www.testmuai.com/lambdatest-is-now-testmuai/), the world's first fully autonomous **Agentic AI Quality Engineering Platform**.
 
-# About TestMu AI
+Same team. Same infrastructure. Same customer accounts. All existing LambdaTest logins, scripts, capabilities, and integrations continue to work without change.
 
-**TestMu AI (Formerly LambdaTest)** is a unified AI-native testing platform that helps teams run automated and manual tests across real devices, browsers, and operating systems at scale.
+👉 Find the new home for [LambdaTest](https://www.testmuai.com).
 
-It enables teams to:
+### How LambdaTest Evolved into TestMu AI
 
-* Run **Selenium, Cypress, Playwright, and Appium tests**
-* Test across **3000+ real browsers and devices**
-* Execute tests on **real mobile device cloud**
-* Accelerate test automation with **HyperExecute**
-* Perform **visual testing and accessibility testing**
+In 2017, we launched LambdaTest with a simple mission: make testing fast, reliable, and accessible. As LambdaTest grew, we expanded into Test Intelligence, Visual Regression Testing, Accessibility Testing, API Testing, and Performance Testing, covering the full depth of the testing lifecycle.
 
-Organizations worldwide rely on **TestMu AI (Formerly LambdaTest)** to improve software quality and release faster.
+As software development entered the AI era, testing had to evolve, too. We rebuilt the architecture to be AI-native from the ground up, with autonomous agents that **plan, author, execute, analyze, and optimize tests** while keeping humans in the loop. The platform integrates with your repos, CI, IDEs, and terminals, continuously learning from every code change and development signal.
 
----
+That evolution earned a new name: **TestMu AI**, built for an AI-first future of quality engineering. TestMu is not a new name for us. It is the name of our annual community conference, which has brought together 100,000+ quality engineers to discuss how AI would reshape testing, long before that became an industry norm. 
+
+What started as a high-performance cloud testing platform has transformed into an AI-native, multi-agent system powering a connected, end-to-end quality layer. That evolution defined a new identity: LambdaTest evolved into TestMu AI, built for an AI-first future of quality engineering.
+
+## Support
+
+Got a question? Email [support@testmuai.com](mailto:support@testmuai.com) or chat with us 24x7 from our chat portal.

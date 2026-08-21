@@ -1,72 +1,71 @@
-import io.appium.java_client.MobileBy
-import io.appium.java_client.MobileElement
-import io.appium.java_client.remote.AppiumCommandExecutor
-import io.appium.java_client.android.AndroidDriver
-import io.appium.java_client.android.AndroidElement
+import io.appium.java_client.AppiumBy
 import io.appium.java_client.ios.IOSDriver
-import io.appium.java_client.ios.IOSElement
+import io.appium.java_client.ios.options.XCUITestOptions
 import org.junit.jupiter.api.Test
-import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.WebElement
 import java.net.URL
 
 class IOSAppAutomation {
 
     @Test
-    public fun sampletest() {
-        val username = System.getenv("LT_USERNAME")    //Add your LambdaTest username here
-        val accessKey = System.getenv("LT_ACCESS_KEY")    //Add your LambdaTest accessKey here
+    fun sampletest() {
 
-//        var driver: IOSDriver<IOSElement>? = null
+        val username = System.getenv("LT_USERNAME")
+        val accessKey = System.getenv("LT_ACCESS_KEY")
 
-        val hub = URL("https://${username}:${accessKey}@mobile-hub.lambdatest.com/wd/hub")
+        val hub = URL("https://mobile-hub.lambdatest.com/wd/hub")
 
-        val caps = DesiredCapabilities()
-        caps.setCapability("platformName", "ios")
-        caps.setCapability("deviceName", "iPhone .*")
-        caps.setCapability("platformVersion", "14")
-        caps.setCapability("isRealMobile", true)
-        caps.setCapability("app", "lt://proverbial-ios") //Add the app (.ipa) url here
-        caps.setCapability("deviceOrientation", "PORTRAIT")
-        caps.setCapability("build", "Kotlin Vanilla - iOS")
-        caps.setCapability("name", "Sample Test Kotlin")
-        caps.setCapability("console", true)
-        caps.setCapability("network", false)
-        caps.setCapability("visual", true)
-        caps.setCapability("device log", true)
+        val options = XCUITestOptions()
 
+        // W3C LambdaTest capability structure
+        val ltOptions = HashMap<String, Any>()
 
-        val app = IOSDriver<IOSElement>(hub, caps)
+        ltOptions["user"] = username!!
+        ltOptions["accessKey"] = accessKey!!
 
-        Thread.sleep(4000)
+        ltOptions["build"] = "Kotlin Vanilla - iOS"
+        ltOptions["name"] = "Sample Test Kotlin"
 
-        val color: MobileElement =
-            app.findElementById("color")
+        ltOptions["platformName"] = "iOS"
+        ltOptions["deviceName"] = "iPhone 13"
+        ltOptions["platformVersion"] = "15"
+
+        ltOptions["isRealMobile"] = true
+        ltOptions["console"] = true
+        ltOptions["network"] = false
+        ltOptions["visual"] = true
+        ltOptions["autoGrantPermissions"]=true
+        ltOptions["autoAcceptAlerts"]=true
+        ltOptions["devicelog"] = true
+
+        options.setCapability("lt:options", ltOptions)
+
+       options.setCapability("app", "<your_app_id>")
+        options.setCapability("deviceOrientation", "PORTRAIT")
+
+        val app = IOSDriver(hub, options)
+        println("Session is starting please wait")
+
+        Thread.sleep(8000)
+
+        val color: WebElement = app.findElement(AppiumBy.id("color"))
         color.click()
 
-        val text: MobileElement =
-            app.findElementById("Text")
+        val text: WebElement = app.findElement(AppiumBy.id("Text"))
         text.click()
 
-        val toast: MobileElement =
-            app.findElementById("toast")
+        val toast: WebElement = app.findElement(AppiumBy.id("toast"))
         toast.click()
 
-        val notification: MobileElement =
-            app.findElementById("notification")
+        val notification: WebElement = app.findElement(AppiumBy.id("notification"))
         notification.click()
 
-        val geo: MobileElement =
-            app.findElementById("geoLocation")
+        val geo: WebElement = app.findElement(AppiumBy.id("geoLocation"))
         geo.click()
 
         Thread.sleep(5000)
 
         app.navigate().back()
-
-
-//        if (app != null) {
-            app.quit()
-//        };
-
+        app.quit()
     }
 }

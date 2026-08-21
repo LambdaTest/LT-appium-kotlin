@@ -1,0 +1,86 @@
+trigger: none
+
+parameters:
+
+  - name: testClass
+    displayName: Select Test Class
+    type: string
+    default: AndroidAppAutomation
+    values:
+      - AndroidAppAutomation
+      - AndroidWebAutomation
+      - IOSAppAutomation
+      - IOSWebAutomation
+
+  - name: platform
+    displayName: Select Platform
+    type: string
+    default: android
+    values:
+      - android
+      - ios
+      - both
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  LT_USERNAME: $(LT_USERNAME)
+  LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+
+stages:
+
+  # ---------------- ANDROID ----------------
+
+  - stage: AndroidTests
+    condition: or(eq('${{ parameters.platform }}','android'), eq('${{ parameters.platform }}','both'))
+    jobs:
+
+      - job: android_job
+        displayName: Run Android Tests
+
+        steps:
+
+          - checkout: self
+
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+
+          - script: mvn clean install -DskipTests
+            displayName: Install Dependencies
+
+          - script: |
+              echo "Running ${{ parameters.testClass }} on Android"
+              mvn -Dtest=${{ parameters.testClass }} test
+            displayName: Run Android Test
+
+
+  # ---------------- IOS ----------------
+
+  - stage: IOSTests
+    condition: or(eq('${{ parameters.platform }}','ios'), eq('${{ parameters.platform }}','both'))
+    jobs:
+
+      - job: ios_job
+        displayName: Run iOS Tests
+
+        steps:
+
+          - checkout: self
+
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+
+          - script: mvn clean install -DskipTests
+            displayName: Install Dependencies
+
+          - script: |
+              echo "Running ${{ parameters.testClass }} on iOS"
+              mvn -Dtest=${{ parameters.testClass }} test
+            displayName: Run iOS Test

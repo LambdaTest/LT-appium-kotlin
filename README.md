@@ -19,7 +19,7 @@ With TestMu AI (Formerly LambdaTest), you can run Appium tests in Kotlin across 
 
 - JDK 8 or higher
 - Maven
-- IntelliJ IDEA
+- IntelliJ IDEA (with the Kotlin plugin enabled)
 - A TestMu AI (Formerly LambdaTest) account with your username and access key
 
 ### Setup
@@ -30,6 +30,8 @@ Clone and install dependencies:
 git clone https://github.com/LambdaTest/LT-appium-kotlin && cd LT-appium-kotlin
 mvn clean install
 ```
+
+Open the project in **IntelliJ IDEA** as a **Maven project**.
 
 Set your credentials as environment variables.
 
@@ -47,11 +49,121 @@ set LT_USERNAME="YOUR_USERNAME"
 set LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 ```
 
+### Upload Your Application
+
+Upload your **Android (.apk)** or **iOS (.ipa)** application using the REST API.
+
+**Using App File:**
+
+```bash
+curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
+--location --request POST 'https://manual-api.lambdatest.com/app/upload/realDevice' \
+--form 'name="Android_App"' \
+--form 'appFile=@"/path/to/your/app.apk"'
+```
+
+**Using App URL:**
+
+```bash
+curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
+--location --request POST 'https://manual-api.lambdatest.com/app/upload/realDevice' \
+--form 'name="Android_App"' \
+--form 'url="https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_android.apk"'
+```
+
+The response returns an **APP_URL** of the format:
+
+```
+lt://APP123456789
+```
+
+Use this **APP_URL** in the `app` capability of your test.
+
+**Tip:** If you do not have an **.apk** or **.ipa** file, you can run the sample tests using our sample :link: [Android app](https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_android.apk) or sample :link: [iOS app](https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_ios.ipa).
+
+### Sample Tests
+
+This project contains the following sample test classes:
+
+```
+src/test/kotlin/
+├── AndroidAppAutomation.kt
+├── AndroidWebAutomation.kt
+├── IOSAppAutomation.kt
+└── IOSWebAutomation.kt
+```
+
+### Configuring Your Test Capabilities
+
+The tests use the **W3C standard capability structure**, where all TestMu AI (Formerly LambdaTest) specific capabilities are nested under the `lt:options` key.
+
+**Android:**
+
+```kotlin
+val options = UiAutomator2Options()
+val ltOptions = HashMap<String, Any>()
+
+ltOptions["user"] = System.getenv("LT_USERNAME")
+ltOptions["accessKey"] = System.getenv("LT_ACCESS_KEY")
+ltOptions["build"] = "Kotlin Vanilla - Android"
+ltOptions["name"] = "Sample Test Kotlin"
+ltOptions["platformName"] = "Android"
+ltOptions["deviceName"] = "Galaxy.*"
+ltOptions["platformVersion"] = "15"
+ltOptions["isRealMobile"] = true
+ltOptions["deviceOrientation"] = "PORTRAIT"
+ltOptions["app"] = "APP_URL" // Add the app (.apk) url here
+
+options.setCapability("lt:options", ltOptions)
+```
+
+**iOS:**
+
+```kotlin
+val options = XCUITestOptions()
+val ltOptions = HashMap<String, Any>()
+
+ltOptions["user"] = System.getenv("LT_USERNAME")
+ltOptions["accessKey"] = System.getenv("LT_ACCESS_KEY")
+ltOptions["build"] = "Kotlin Vanilla - iOS"
+ltOptions["name"] = "Sample Test Kotlin"
+ltOptions["platformName"] = "iOS"
+ltOptions["deviceName"] = "iPhone 13"
+ltOptions["platformVersion"] = "15"
+ltOptions["isRealMobile"] = true
+
+options.setCapability("lt:options", ltOptions)
+options.setCapability("app", "APP_URL") // Add the app (.ipa) url here
+options.setCapability("deviceOrientation", "PORTRAIT")
+```
+
+**Note:**
+
+* You must add the generated **APP_URL** (returned when you [upload your application](#upload-your-application)) to the `app` capability in the test file.
+* You can generate capabilities for your test requirements with the help of our inbuilt **[Capabilities Generator tool](https://www.lambdatest.com/capabilities-generator/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-kotlin)**. A more detailed capability guide is available [here](https://www.lambdatest.com/support/docs/desired-capabilities-in-appium/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-kotlin).
+
 ### Run tests
 
-Open the project in IntelliJ IDEA and run the test class.
+Open the project in IntelliJ IDEA and run the test class, or run it from the command line:
 
-View results on your TestMu AI dashboard.
+```bash
+# Android app test
+mvn -Dtest=AndroidAppAutomation test
+
+# Android web test
+mvn -Dtest=AndroidWebAutomation test
+
+# iOS app test
+mvn -Dtest=IOSAppAutomation test
+
+# iOS web test
+mvn -Dtest=IOSWebAutomation test
+
+# All tests
+mvn test
+```
+
+View results on your TestMu AI dashboard, including live test execution, device logs, network logs, video recording, and screenshots.
 
 ### Local testing with TestMu AI Tunnel
 

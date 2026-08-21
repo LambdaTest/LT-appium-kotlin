@@ -1,0 +1,57 @@
+name: Appium Kotlin Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+
+      testClass:
+        description: Select Test Class
+        required: true
+        type: choice
+        options:
+          - AndroidAppAutomation
+          - AndroidWebAutomation
+          - IOSAppAutomation
+          - IOSWebAutomation
+
+      platform:
+        description: Select Platform
+        required: true
+        type: choice
+        options:
+          - android
+          - ios
+          - both
+
+jobs:
+
+  run-tests:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platform: ${{ fromJson(github.event.inputs.platform == 'both' && '["android","ios"]' || format('["{0}"]', github.event.inputs.platform)) }}
+
+    env:
+      LT_USERNAME: ${{ secrets.LT_USERNAME }}
+      LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Install Dependencies
+        run: mvn clean install -DskipTests
+
+      - name: Run Selected Test
+        run: |
+          echo "Running ${{ github.event.inputs.testClass }} on ${{ matrix.platform }}"
+          mvn -Dtest=${{ github.event.inputs.testClass }} test

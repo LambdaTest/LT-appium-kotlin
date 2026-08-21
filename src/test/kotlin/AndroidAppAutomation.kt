@@ -1,82 +1,75 @@
-import io.appium.java_client.MobileBy
-import io.appium.java_client.MobileElement
+import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.AndroidDriver
-import io.appium.java_client.android.AndroidElement
-import org.junit.jupiter.api.*
-import org.openqa.selenium.remote.DesiredCapabilities
+import io.appium.java_client.android.options.UiAutomator2Options
+import org.junit.jupiter.api.Test
+import org.openqa.selenium.WebElement
 import java.net.URL
 
 class AndroidAppAutomation {
 
     @Test
-    public fun sampletest() {
-        val username = System.getenv("LT_USERNAME")    //Add your LambdaTest username here
-        val accessKey = System.getenv("LT_ACCESS_KEY")    //Add your LambdaTest accessKey here
+    fun sampletest() {
 
-//        var driver: AndroidDriver<MobileElement>? = null
+        val username = System.getenv("LT_USERNAME")
+        val accessKey = System.getenv("LT_ACCESS_KEY")
 
-        val hub = URL("https://${username}:${accessKey}@mobile-hub.lambdatest.com/wd/hub")
+        val hub = URL("https://mobile-hub.lambdatest.com/wd/hub")
 
-        val caps = DesiredCapabilities()
-        caps.setCapability("autoAcceptAlerts", true)
-        caps.setCapability("platformName", "Android")
-        caps.setCapability("deviceName", "Galaxy .*")
-        caps.setCapability("platformVersion", "11")
-        caps.setCapability("platformName", "Android")
-        caps.setCapability("isRealMobile", true)
-        caps.setCapability("app", "lt://proverbial-android") //Add the app (.apk) url here
-        caps.setCapability("deviceOrientation", "PORTRAIT")
-        caps.setCapability("build", "Kotlin Vanilla - Android")
-        caps.setCapability("name", "Sample Test Kotlin")
-        caps.setCapability("console", true)
-        caps.setCapability("network", false)
-        caps.setCapability("visual", true)
-        caps.setCapability("devicelog", true)
+        val options = UiAutomator2Options()
 
+        // W3C LambdaTest capability structure — same as iOS classes
+        val ltOptions = HashMap<String, Any>()
 
-        val app = AndroidDriver<AndroidElement>(hub, caps)
+        ltOptions["user"] = username
+        ltOptions["accessKey"] = accessKey
 
-        Thread.sleep(4000)
+        ltOptions["build"] = "Kotlin Vanilla - Android"
+        ltOptions["name"] = "Sample Test Kotlin"
 
-        val color: MobileElement =
-            app.findElement(MobileBy.id("com.lambdatest.proverbial:id/color")) as MobileElement
+        ltOptions["platformName"] = "Android"
+        ltOptions["deviceName"] = "Galaxy.*"
+        ltOptions["platformVersion"] = "15"
+
+        ltOptions["isRealMobile"] = true
+        ltOptions["deviceOrientation"] = "PORTRAIT"
+        ltOptions["console"] = true
+        ltOptions["network"] = false
+        ltOptions["autoGrantPermissions"]=true
+        ltOptions["autoAcceptAlerts"]=true
+        ltOptions["visual"] = true
+        ltOptions["devicelog"] = true
+        ltOptions["app"]="<your_app_id>"
+
+        options.setCapability("lt:options", ltOptions)
+
+        val app = AndroidDriver(hub, options)
+        println("Session is starting please wait")
+        Thread.sleep(9000)
+
+        val color: WebElement = app.findElement(AppiumBy.id("com.lambdatest.proverbial:id/color"))
         color.click()
 
-        val text: MobileElement =
-            app.findElement(MobileBy.id("com.lambdatest.proverbial:id/Text")) as MobileElement
+        val text: WebElement = app.findElement(AppiumBy.id("com.lambdatest.proverbial:id/Text"))
         text.click()
 
-        val toast: MobileElement =
-            app.findElement(MobileBy.id("com.lambdatest.proverbial:id/toast")) as MobileElement
+        val toast: WebElement = app.findElement(AppiumBy.id("com.lambdatest.proverbial:id/toast"))
         toast.click()
 
-        val notification: MobileElement =
-            app.findElement(MobileBy.id("com.lambdatest.proverbial:id/notification")) as MobileElement
+        val notification: WebElement = app.findElement(AppiumBy.id("com.lambdatest.proverbial:id/notification"))
         notification.click()
 
-        val geo: MobileElement =
-            app.findElement(MobileBy.id("com.lambdatest.proverbial:id/geoLocation")) as MobileElement
+        val geo: WebElement = app.findElement(AppiumBy.id("com.lambdatest.proverbial:id/geoLocation"))
         geo.click()
         Thread.sleep(5000)
-
-//        val el3: MobileElement =
-//            app.findElementByAccessibilityId("Home") as MobileElement
-//        el3.click()
 
         app.navigate().back()
         Thread.sleep(2000)
 
-        val speedtest: MobileElement =
-            app.findElement(MobileBy.id("com.lambdatest.proverbial:id/speedTest")) as MobileElement
+        val speedtest: WebElement = app.findElement(AppiumBy.id("com.lambdatest.proverbial:id/speedTest"))
         speedtest.click()
         Thread.sleep(5000)
 
         app.navigate().back()
-
-
-//        if (app != null) {
-            app.quit()
-//        };
-
+        app.quit()
     }
 }
